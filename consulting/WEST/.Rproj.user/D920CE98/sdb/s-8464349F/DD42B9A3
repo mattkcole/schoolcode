@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"WEST Study\"\nauthor: \"Matt Cole\"\ndate: \"November 14, 2016\"\noutput: pdf_document\n---\n\n```{r, echo = F, warning=F, results='hold', include = F}\nlibrary(readr); library(dplyr)\nlibrary(binom) ; library(knitr)\n\ndat <- read_delim('data.tsv', delim = \"\\t\")\ncolnames(dat) <- c(\"group\", \"no_change\", \"in_stem\", \"out_stem\", \"n\")\ndat <- dat %>% \n        mutate(p_stay = (no_change + in_stem) / (no_change + in_stem + out_stem))\n```\n\n### Introduction \n\nThe Women in Engineering, Science, and technology (WEST) program was created to improve the retention of women undergraduates in Science, engineering, and mathematics majors. Previous studies and reports have linked a large proportion of women in these fields dropping out of their respective programs. This program was designed in an attempt to combat this phenomenon by placing first year undergraduate women into research roles. The additional experience, mentorship, and socialization between researchers and WEST participants strives to increase major retention.\n\nFor each WEST student, two controls, a male and a female were found at the same university based upon interested major, race, SAT scores, as well as a self reported 'major uncertainty' score.\n\nEach WEST student, and her two controls were followed for the following outcomes:\n\n * dropping out of school\n * remaining in major\n * switching to another STEM major\n * switching out of STEM\n\nstudents whom dropped out of college were removed from the analysis along with their case(s)/control.\n\n### Results\n\n```{r echo = F}\nx <- binom.confint(dat$no_change + dat$in_stem, dat$n, methods = \"exact\") %>%\n        select(-method) %>% rename(proportion = mean)\nx[,1] <- c(\"WEST students\", \"Control (Female)\", \"Control (Male)\")\ny <- colnames(x)      \ny[1] <- \"Group\"\ncolnames(x) <- y\n```\n\nWe notice that the WEST participants have a higher proportion remaining in STEM majors (`r round(x[1,3],2)`, 95% CI: `r round(x[1,4],2)`, `r round(x[1,5],2)`) than female controls (`r round(x[2,3],2)`, 95% CI: `r round(x[2,4],2)`, `r round(x[2,5],2)`) or male controls (`r round(x[3,3],2)`, 95% CI: `r round(x[3,4],2)`, `r round(x[3,5],2)`, Table 1).\n\n```{r echo = F}\nkable(x, digits = 2)\n```\n\n__Table 1__    The proportion of students whom remained in a STM major after the first year with exact 95% confidence intervals.\n\n\n```{r echo = F}\ntest <- prop.test(c(sum(dat[1,2:3]), sum(dat[2,2:3]) + sum(dat[3,2:3]) ),\nc(dat$n[1], sum(dat$n[2:3])), alternative = \"two.sided\", conf.level = 0.95,\ncorrect = FALSE)\n# summary(test)\n```\n\n\nWe can also compare the proportion of students staying in STEM programs in both the WEST (`r round(test$estimate[1], 2)`) and control group ( `r round(test$estimate[2], 2)`, created by combining both male and female control groups). 2-sample test for equality of proportions without continuity correction was conducted, testing if the proportions of students staying in STEM majors was the same or different between groups. A significant difference between groups was found (95% CI: `r round(test$conf.int[1], 2)`, `r round(test$conf.int[2], 2)`))\n\n### Future work\n\nHere, we delt with only unpaired data, despite the study design allowing for paired analysis, giving us additional power to assess difference. Similarly, in this preliminary analysis, only the proportion of students staying/leaving STEM was recorded despite additional information being collected on those students who switched within STEM. Similarly, the difference between male and female controls was ignored which may provide additional information regarding the relationships at play here. \n\n\n\n\n",
+    "created" : 1479083437607.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2651850642",
+    "id" : "DD42B9A3",
+    "lastKnownWriteTime" : 1479089590,
+    "last_content_update" : 1479089590769,
+    "path" : "~/Dropbox/School/consulting/WEST/west.rmd",
+    "project_path" : "west.rmd",
+    "properties" : {
+        "ignored_words" : "mentorship,delt\n",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

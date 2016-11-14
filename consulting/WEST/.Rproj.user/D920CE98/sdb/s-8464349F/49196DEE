@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "Group\tNo change in major\tChange within SEM\tChange out of SEM\tTotal\nWEST students\t52\t12\t8\t72\nControl (Female)\t44\t8\t20\t72\nControl (Male)\t45\t9\t18\t72",
+    "created" : 1479083448030.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1826660696",
+    "id" : "49196DEE",
+    "lastKnownWriteTime" : 1479083471,
+    "last_content_update" : 1479083471091,
+    "path" : "~/Dropbox/School/consulting/WEST/data.tsv",
+    "project_path" : "data.tsv",
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "text"
+}

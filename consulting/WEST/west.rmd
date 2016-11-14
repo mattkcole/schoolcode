@@ -1,0 +1,69 @@
+---
+title: "WEST Study"
+author: "Matt Cole"
+date: "November 14, 2016"
+output: pdf_document
+---
+
+```{r, echo = F, warning=F, results='hold', include = F}
+library(readr); library(dplyr)
+library(binom) ; library(knitr)
+
+dat <- read_delim('data.tsv', delim = "\t")
+colnames(dat) <- c("group", "no_change", "in_stem", "out_stem", "n")
+dat <- dat %>% 
+        mutate(p_stay = (no_change + in_stem) / (no_change + in_stem + out_stem))
+```
+
+### Introduction 
+
+The Women in Engineering, Science, and technology (WEST) program was created to improve the retention of women undergraduates in Science, engineering, and mathematics majors. Previous studies and reports have linked a large proportion of women in these fields dropping out of their respective programs. This program was designed in an attempt to combat this phenomenon by placing first year undergraduate women into research roles. The additional experience, mentorship, and socialization between researchers and WEST participants strives to increase major retention.
+
+For each WEST student, two controls, a male and a female were found at the same university based upon interested major, race, SAT scores, as well as a self reported 'major uncertainty' score.
+
+Each WEST student, and her two controls were followed for the following outcomes:
+
+ * dropping out of school
+ * remaining in major
+ * switching to another STEM major
+ * switching out of STEM
+
+students whom dropped out of college were removed from the analysis along with their case(s)/control.
+
+### Results
+
+```{r echo = F}
+x <- binom.confint(dat$no_change + dat$in_stem, dat$n, methods = "exact") %>%
+        select(-method) %>% rename(proportion = mean)
+x[,1] <- c("WEST students", "Control (Female)", "Control (Male)")
+y <- colnames(x)      
+y[1] <- "Group"
+colnames(x) <- y
+```
+
+We notice that the WEST participants have a higher proportion remaining in STEM majors (`r round(x[1,3],2)`, 95% CI: `r round(x[1,4],2)`, `r round(x[1,5],2)`) than female controls (`r round(x[2,3],2)`, 95% CI: `r round(x[2,4],2)`, `r round(x[2,5],2)`) or male controls (`r round(x[3,3],2)`, 95% CI: `r round(x[3,4],2)`, `r round(x[3,5],2)`, Table 1).
+
+```{r echo = F}
+kable(x, digits = 2)
+```
+
+__Table 1__    The proportion of students whom remained in a STM major after the first year with exact 95% confidence intervals.
+
+
+```{r echo = F}
+test <- prop.test(c(sum(dat[1,2:3]), sum(dat[2,2:3]) + sum(dat[3,2:3]) ),
+c(dat$n[1], sum(dat$n[2:3])), alternative = "two.sided", conf.level = 0.95,
+correct = FALSE)
+# summary(test)
+```
+
+
+We can also compare the proportion of students staying in STEM programs in both the WEST (`r round(test$estimate[1], 2)`) and control group ( `r round(test$estimate[2], 2)`, created by combining both male and female control groups). 2-sample test for equality of proportions without continuity correction was conducted, testing if the proportions of students staying in STEM majors was the same or different between groups. A significant difference between groups was found (95% CI: `r round(test$conf.int[1], 2)`, `r round(test$conf.int[2], 2)`))
+
+### Future work
+
+Here, we delt with only unpaired data, despite the study design allowing for paired analysis, giving us additional power to assess difference. Similarly, in this preliminary analysis, only the proportion of students staying/leaving STEM was recorded despite additional information being collected on those students who switched within STEM. Similarly, the difference between male and female controls was ignored which may provide additional information regarding the relationships at play here. 
+
+
+
+
