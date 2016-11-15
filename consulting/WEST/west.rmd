@@ -17,16 +17,16 @@ dat <- dat %>%
 
 ## Introduction 
 
-The Women in Engineering, Science, and Technology (WEST) program was created to improve the retention of women undergraduates in Science, Engineering, and Mathematics majors. Previous studies and reports have linked a large proportion of women in these fields dropping out of their respective programs. This program was designed in an attempt to combat this phenomenon by placing first year undergraduate women into research roles. The additional experience, mentorship, and socialization between researchers and WEST participants strives to increase major retention.
+The Women in Engineering, Science, and Technology (WEST) program was created to improve the retention of women undergraduates in Science, Engineering, and Mathematics (STEM) undergraduate programs. Previous studies and reports have linked a large proportion of women in these fields dropping out of their respective programs. This program was designed in an attempt to combat this phenomenon by placing first year undergraduate women into research roles. The additional experience, mentorship, and socialization between researchers and WEST participants strives to increase STEM major retention.
 
-For each WEST student, two controls, a male and a female were found at the same university based upon interested major, race, SAT scores, as well as a self reported 'major uncertainty' score.
+For each WEST student, two controls, one male and one female were selected at the same university based upon interested major, race, SAT scores, as well as a self reported 'major uncertainty' score.
 
-Each WEST student, and her two controls were followed for the following outcomes:
+Each WEST student, and her two controls were followed for the following outcomes after 1 year of schooling:
 
  * dropping out of school
  * remaining in major
  * switching to another STEM major
- * switching out of STEM
+ * switching to a non-STEM major
 
 students whom dropped out of college were removed from the analysis along with their case(s)/control.
 
@@ -41,7 +41,7 @@ y[1] <- "Group"
 colnames(x) <- y
 ```
 
-We notice that the WEST participants have a higher proportion remaining in STEM majors (`r round(x[1,3],2)`, 95% CI: `r round(x[1,4],2)`, `r round(x[1,5],2)`) than female controls (`r round(x[2,3],2)`, 95% CI: `r round(x[2,4],2)`, `r round(x[2,5],2)`) or male controls (`r round(x[3,3],2)`, 95% CI: `r round(x[3,4],2)`, `r round(x[3,5],2)`, Table 1).
+Of the 72 WEST students and `r 72 * 2` (72 male, 72 female) controls that were analysed, the WEST participants have a higher proportion remaining in STEM majors (`r round(x[1,3],2)`, 95% CI: `r round(x[1,4],2)`, `r round(x[1,5],2)`) than female controls (`r round(x[2,3],2)`, 95% CI: `r round(x[2,4],2)`, `r round(x[2,5],2)`) and male controls (`r round(x[3,3],2)`, 95% CI: `r round(x[3,4],2)`, `r round(x[3,5],2)`, Table 1).
 
 ```{r echo = F}
 kable(x, digits = 2)
@@ -58,11 +58,11 @@ correct = FALSE)
 ```
 
 
-We can also compare the proportion of students staying in STEM programs in both the WEST (`r round(test$estimate[1], 2)`) and control group ( `r round(test$estimate[2], 2)`, created by combining both male and female control groups). 2-sample test for equality of proportions without continuity correction was conducted, testing if the proportions of students staying in STEM majors was the same or different between groups. A significant difference between groups was found (95% CI: `r round(test$conf.int[1], 2)`, `r round(test$conf.int[2], 2)`))
+We can also compare the proportion of students staying in STEM programs in both the WEST (`r round(test$estimate[1], 2)`) and control group (`r round(test$estimate[2], 2)`, created by combining both male and female control groups). A 2-sample test for equality of proportions without continuity correction was conducted, testing if the proportions of students staying in STEM majors was equal between groups. A significant difference between groups was found (95% CI: `r round(test$conf.int[1], 2)`, `r round(test$conf.int[2], 2)`) suggesting that STEM retention was higher in the WEST participants compared with the controls. 
 
 ## Future work
 
-Here, we delt with only unpaired data, despite the study design allowing for paired analysis, giving us additional power to assess difference. Similarly, in this preliminary analysis, only the proportion of students staying/leaving STEM was recorded despite additional information being collected on those students who switched within STEM. Similarly, the difference between male and female controls was ignored which may provide additional information regarding the relationships at play here. 
+Here, we delt with only unpaired data, despite the study design allowing for paired analysis. Including paired data would give us additional power to assess difference that was not previously utilized. Similarly, in this preliminary analysis, only the proportion of students staying/leaving STEM was recorded despite additional information being collected on those students who switched within STEM. In addition, the difference between male and female controls was ignored which may provide additional information regarding the relationships at play here and will be analysed in future work.
 
 
 
